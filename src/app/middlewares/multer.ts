@@ -1,4 +1,5 @@
 import multer from "multer";
+import { Express } from "express";
 import {
   S3Client,
   PutObjectCommand,

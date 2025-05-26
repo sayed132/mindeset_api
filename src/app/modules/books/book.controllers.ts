@@ -77,7 +77,7 @@ export const updateBook = catchAsync(async (req:Request, res:Response) => {
   });
 });
 
-export const uploadBookImages = catchAsync(async (req:Request, res:Response)=>{
+export const uploadBookImages = catchAsync(async (req:any, res:Response)=>{
   const user = req.user
   const files = req.files as Express.Multer.File[];
    

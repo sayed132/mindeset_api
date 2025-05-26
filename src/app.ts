@@ -3,7 +3,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import router from "./app/routes";
-import { PaymentController } from "./app/modules/payment/payment.controller";
+
 
 
 const app: Application = express();
