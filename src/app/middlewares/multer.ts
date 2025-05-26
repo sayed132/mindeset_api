@@ -1,5 +1,5 @@
 import multer from "multer";
-import { Express } from "express";
+
 import {
   S3Client,
   PutObjectCommand,
@@ -52,7 +52,7 @@ const s3Client = new S3Client({
 
 // Upload file to DigitalOcean Spaces
 const uploadToDigitalOcean = async (
-  file: Express.Multer.File
+  file: any
 ): Promise<UploadResponse> => {
   if (!file) {
     throw new Error("File is required for uploading.");
