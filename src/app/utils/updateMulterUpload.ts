@@ -19,7 +19,7 @@ const s3 = new S3Client({
 
 // Function to upload a file to DigitalOcean Space
 export const uploadFileToSpaceForUpdate = async (
-  file: Express.Multer.File,
+  file: any,
   folder: string,
 ) => {
   if (!process.env.DO_SPACE_BUCKET) {
