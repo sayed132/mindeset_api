@@ -2,7 +2,7 @@ import { Server } from 'http';
 import app from './app';
 // import seedSuperAdmin from './app/DB';
 import config from './config';
-import { setupWebSocket } from './app/utils/websocket';
+// import { setupWebSocket } from './app/utils/websocket';
 
 const port = config.port || 5000;
 
@@ -12,7 +12,7 @@ async function main() {
     // seedSuperAdmin();
   });
 
-  setupWebSocket(server);
+  // setupWebSocket(server);
 
 
   const exitHandler = () => {
