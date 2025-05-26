@@ -79,8 +79,9 @@ export const updateBook = catchAsync(async (req:Request, res:Response) => {
 
 export const uploadBookImages = catchAsync(async (req:any, res:Response)=>{
   const user = req.user
+
   const files = req.files as any;
-   
+   console.log(files)
   if (!files || files.length === 0) { 
     return res.status(400).send({message:"No files uploaded"});
   }

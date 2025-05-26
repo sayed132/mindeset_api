@@ -15,11 +15,7 @@ import { multerUploadMultiple } from '../../utils/multipleFile';
 const router = express.Router();
 
 
-router.post('/:focusId',multerUploadMultiple.fields([
-  {
-    name:'bookImage',maxCount:10
-  }
-]),auth(UserRole.ADMIN), createBook);
+router.post('/:focusId',auth(UserRole.ADMIN), createBook);
 
 // Get all books
 router.get('/',auth(UserRole.USER), getAllBooks);
@@ -27,14 +23,9 @@ router.get('/',auth(UserRole.USER), getAllBooks);
 // Get books by category (focus area)
 router.get('/focuses/:focusId',auth(UserRole.USER), getBooksByCategory);
 
-
-
-
 router.put(
   '/uploads',
-  multerUploadMultiple.fields([
-    { name: 'bookImage', maxCount: 10 },
-  ]),
+  multerUploadMultiple.array('images', 15),
   auth(),
   uploadBookImages
 );
