@@ -14,7 +14,7 @@ const s3 = new S3Client({
 });
 
 // Function to upload a file to DigitalOcean Space
-export const uploadFileToSpace = async (file: Express.Multer.File, folder: string) => {
+export const uploadFileToSpace = async (file: any, folder: string) => {
   if (!process.env.DO_SPACE_BUCKET) {
     throw new Error("DO_SPACE_BUCKET is not defined in the environment variables.");
   }
