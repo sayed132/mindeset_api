@@ -3,6 +3,7 @@ import AppError from "../../errors/AppError"
 import prisma from "../../utils/prisma"
 import isDateValid from "../../utils/checkDateValidity"
 import { title } from "process"
+import { Journal } from "@prisma/client"
 
 
 
@@ -80,7 +81,7 @@ const deleteJournal = async (userId:string, journalId:string)=>{
 
 
 const searchJournal = async (userId:string, q:string)=>{
-     let filteredJournals = []
+     let filteredJournals:Journal[] = []
     try{
          const dateIsValid = isDateValid(q)
         console.log(dateIsValid)
