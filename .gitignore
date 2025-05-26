@@ -1,0 +1,14 @@
+node_modules
+
+dist
+# Keep environment variables out of version control
+
+.vercel
+generate-module.ts
+.vercel
+
+.vercel
+
+
+
+

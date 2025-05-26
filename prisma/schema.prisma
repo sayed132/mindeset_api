@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String  @unique
+  password    String
+  fcmToken    String?
+  accessToken String?
+
+  selectedFocusAreaId String?    @db.ObjectId
+  selectedFocusArea   FocusArea? @relation(name: "userFocus", fields: [selectedFocusAreaId], references: [id])
+  doNotDisturb        Boolean    @default(false)
+  gennder             Gender     @default(MALE)
+  role                UserRole   @default(USER)
+  journals            Journal[]
+  streak              Streak?
+  otp                 String?
+  otpExpiry           DateTime?
+  sentNotification        Notification[]  @relation(name: "sender")
+  recievedNotification    Notification []   @relation(name: "reciever")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Streak {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  streakCount Int    @default(0)
+  userId      String @unique @db.ObjectId
+  user        User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Journal {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model selectedFocusArea {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  focusArea String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FocusArea {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  quotes    Quote[]
+  books     Book[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User[] @relation(name: "userFocus")
+}
+
+model Quote {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  text        String
+  author      String
+  focusAreaId String    @db.ObjectId
+  focusArea   FocusArea @relation(fields: [focusAreaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Book {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ttitle      String
+  author      String
+  authorDescription String
+  overview    String
+  images      String[]
+  url         String
+  focusAreaId String    @db.ObjectId
+  focusArea   FocusArea @relation(fields: [focusAreaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId    String   @db.ObjectId
+  recieverId  String   @db.ObjectId
+  title     String
+  body      String
+  author      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  reciever      User     @relation(name: "reciever", fields: [recieverId], references: [id])
+  sender        User     @relation(name: "sender", fields: [senderId],references: [id])
+
+  @@map("notifications")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  GUEST
+}
