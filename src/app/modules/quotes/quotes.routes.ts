@@ -16,13 +16,13 @@ const router = express.Router();
 router.post('/:focusId', auth(UserRole.ADMIN), createQuote);
 
 // Get all quotes
-router.get('/',auth(UserRole.USER), getAllQuotes);
+router.get('/',auth(UserRole.USER, UserRole.ADMIN), getAllQuotes);
 
 // Get quotes by focus area (category)
-router.get('/category/:focusId',auth(UserRole.USER), getQuotesByCategory);
+router.get('/category/:focusId',auth(UserRole.USER, UserRole.ADMIN), getQuotesByCategory);
 
 // Get a specific quote by ID
-router.get('/:id',auth(UserRole.USER), getAQuote);
+router.get('/:id',auth(UserRole.USER, UserRole.ADMIN), getAQuote);
 
 // Update a quote by ID
 router.patch('/:id',auth(UserRole.ADMIN), updateQuote);

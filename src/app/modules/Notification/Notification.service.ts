@@ -19,8 +19,7 @@ const sendSingleNotification = async (req: any) => {
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
-    console.log(user)
-    console.log(user?.fcmToken);
+
     if (!user || !user.fcmToken ) {
       throw new AppError(httpStatus.BAD_REQUEST, "Fcm token is not present")
     }

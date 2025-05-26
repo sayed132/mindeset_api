@@ -22,7 +22,7 @@ const getStreak = catchAsync (async (req,res)=>{
   const result = await UserServices.getStreak(userId)
 
   sendResponse(res, {
-    statusCode: httpStatus.CREATED,
+    statusCode: httpStatus.OK,
     success: true,
     message: 'User Streak',
     data: result,
@@ -159,7 +159,9 @@ const verifyOtpForgotPassword = catchAsync(async (req, res) => {
 // });
 
 const updatePassword = catchAsync(async (req, res) => {
-  const result = await UserServices.updatePasswordIntoDb(req.body);
+  const user = req.user as any;
+  console.log("user", user);
+  const result = await UserServices.updatePasswordIntoDb(user.id,req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

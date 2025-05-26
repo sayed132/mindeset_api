@@ -25,6 +25,7 @@ if(!userData){
   if (!userData.password) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Invalid login credentials, please try again.');
   }
+  console.log("userData", userData);
 
   const isCorrectPassword: Boolean = await bcrypt.compare(
     payload.password,
@@ -35,7 +36,7 @@ if(!userData){
     throw new AppError(httpStatus.BAD_REQUEST, 'Invalid login credentials, please try again.');
   }
   let expiry = config.jwt.access_expires_in as string
-  if (payload.remember){
+  if (!payload.remember){
     expiry = "1d"
   }
   

@@ -86,12 +86,12 @@ router.post('/resend-otp',auth(), UserControllers.resendOtp);
 // );
 
 router.put(
-  '/verify-otp-forgot-password',auth(),
+  '/verify-otp',auth(),
   validateRequest(UserValidations.verifyOtpSchema),
   UserControllers.verifyOtpForgotPassword
 );
 
-router.put('/reset-password', UserControllers.updatePassword);
+router.put('/update-password',auth(), UserControllers.updatePassword);
 
 
 // router.post(

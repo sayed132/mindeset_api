@@ -3,6 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import {bookServices} from './books.services';
 import { Request, Response } from 'express';
+import { uploadFileToSpace } from '../../utils/multerUpload';
 
 export const createBook = catchAsync(async (req:Request, res:Response) => {
   const focusId = req.params.focusId;
@@ -77,7 +78,21 @@ export const updateBook = catchAsync(async (req:Request, res:Response) => {
 });
 
 export const uploadBookImages = catchAsync(async (req:Request, res:Response)=>{
-   const user = req.user
+  const user = req.user
+  const files = req.files as Express.Multer.File[];
    
-    res.send({message:"Uploaded"})
+  if (!files || files.length === 0) { 
+    return res.status(400).send({message:"No files uploaded"});
+  }
+  const filePaths = await Promise.all(files.map(async (file) => {
+     const path = await  uploadFileToSpace(file , user.id)
+     return path;
+  
+  }))
+ 
+
+  // Assuming uploadBookImages returns a success message or similar
+
+   
+    res.send({message:"Uploaded", data:filePaths})
 })

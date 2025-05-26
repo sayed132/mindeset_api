@@ -321,7 +321,7 @@ const forgotPassword = async (payload: { email: string }) => {
   });
 
   if (!userData) {
-    throw new AppError(httpStatus.CONFLICT, 'User not found!');
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
 
   // const client = new Twilio(config.twilio.accountSid, config.twilio.authToken);
@@ -336,7 +336,7 @@ const forgotPassword = async (payload: { email: string }) => {
   //   );
   // }
   // Generate 6-digit OTP
-  const otp = Math.floor(100000 + Math.random() * 90000).toString();
+  const otp = Math.floor(10000 + Math.random() * 90000).toString();
   const expiry = new Date(Date.now() + OTP_EXPIRY_TIME);
 
   // // Check if phone number already exists in the OTP table
@@ -362,8 +362,12 @@ const forgotPassword = async (payload: { email: string }) => {
   //   from: config.twilio.twilioPhoneNumber,
   //   to: phone,
   // });
-
-    await emailSender("Reset password verification",otp,userData.email)
+    try{
+      await emailSender("Reset password verification",userData.email, `<p>Your OTP code is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`)
+    }catch(err){
+      console.log("Error sending email", err)
+    }
+    
 
     return {message:"Verification otp sent to your authorized email"}
 
@@ -598,8 +602,8 @@ const verifyOtpForgotPasswordInDB = async (payload: {
 
 
 
-const updatePasswordIntoDb = async (payload: any) => {
-  const {email, password, confirmPassword} = payload
+const updatePasswordIntoDb = async (userId:string,payload: any) => {
+  const { password, confirmPassword} = payload
 
   if (confirmPassword){
     if (password !== confirmPassword){
@@ -608,13 +612,13 @@ const updatePasswordIntoDb = async (payload: any) => {
   }
 
   const userData = await prisma.user.findUnique({
-    where: { email: email },
+    where: { id: userId },
   });
 
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
-  const hashedPassword: string = await bcrypt.hash(password, config.bcrypt_salt_rounds!);
+  const hashedPassword: string = await bcrypt.hash(password, parseInt(config.bcrypt_salt_rounds!));
   const result = await prisma.user.update({
     where: {
       email: userData.email,

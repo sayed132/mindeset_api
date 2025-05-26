@@ -49,10 +49,11 @@ const changePasswordSchema = z.object({
 });
 
 const verifyOtpSchema = z.object({
-  body: z.object({
-    otp: z.number({
+    email:z.string({required_error:"email is required"}).email({
+      message: 'Invalid email format!',}),
+    otp: z.string({
       required_error: 'OTP is required!',
-    }),
+
   }),
 });
 
