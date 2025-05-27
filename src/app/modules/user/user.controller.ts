@@ -159,9 +159,8 @@ const verifyOtpForgotPassword = catchAsync(async (req, res) => {
 // });
 
 const updatePassword = catchAsync(async (req, res) => {
-  const user = req.user as any;
-  console.log("user", user);
-  const result = await UserServices.updatePasswordIntoDb(user.id,req.body);
+ 
+  const result = await UserServices.updatePasswordIntoDb(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

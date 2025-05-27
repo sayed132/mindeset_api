@@ -602,8 +602,8 @@ const verifyOtpForgotPasswordInDB = async (payload: {
 
 
 
-const updatePasswordIntoDb = async (userId:string,payload: any) => {
-  const { password, confirmPassword} = payload
+const updatePasswordIntoDb = async (payload: any) => {
+  const { email,password, confirmPassword} = payload
 
   if (confirmPassword){
     if (password !== confirmPassword){
@@ -612,7 +612,7 @@ const updatePasswordIntoDb = async (userId:string,payload: any) => {
   }
 
   const userData = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { email: email },
   });
 
   if (!userData) {
