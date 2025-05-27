@@ -24,7 +24,7 @@ router.get('/streak', auth(),UserControllers.getStreak)
 router.put('/do-not-disturb', auth(),UserControllers.doNotDisturb )
 
 router.post(
-  '/forgot-password',auth(),
+  '/forgot-password',
   validateRequest(UserValidations.forgetPasswordSchema),
   UserControllers.forgotPassword,
 );
@@ -77,7 +77,7 @@ router.get(
 // router.put('/change-password', auth(), UserControllers.changePassword);
 
 
-router.post('/resend-otp',auth(), UserControllers.resendOtp);
+router.post('/resend-otp', UserControllers.resendOtp);
 
 // router.put(
 //   '/verify-otp',auth(),
@@ -86,12 +86,12 @@ router.post('/resend-otp',auth(), UserControllers.resendOtp);
 // );
 
 router.put(
-  '/verify-otp',auth(),
+  '/verify-otp',
   validateRequest(UserValidations.verifyOtpSchema),
   UserControllers.verifyOtpForgotPassword
 );
 
-router.put('/update-password',auth(), UserControllers.updatePassword);
+router.put('/update-password', UserControllers.updatePassword);
 
 
 // router.post(
