@@ -9,6 +9,7 @@ import { generateToken } from '../../utils/generateToken';
 import emailSender from '../../utils/emailSender';
 import { AuthServices } from '../auth/auth.service';
 import { notificationServices } from '../Notification/Notification.service';
+import { IUserUpdate } from './user.interface';
 
 interface UserWithOptionalPassword extends Omit<User, 'password'> {
   password?: string;
@@ -218,7 +219,7 @@ const getAllUsersFromDB = async () => {
 //   return user;
 // };
 
-const updateMyProfileIntoDB = async (userId: string, payload: {name?:string, email?:string}) => {
+const updateMyProfileIntoDB = async (userId: string, payload:IUserUpdate ) => {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
@@ -230,32 +231,34 @@ const updateMyProfileIntoDB = async (userId: string, payload: {name?:string, ema
       'User not found ',
     );
   }
-  let updatedData:{name?:string, email?:string} = {}
-
-  if (payload.name){
-    updatedData.name = payload.name
-  }
   if (payload.email){
-    updatedData.email = payload.email
+    payload.email = user.email
   }
 
+  if(payload.dob){
+    payload.dob = new Date(payload.dob).toISOString()
+  }
   // update user data
-  const updatedUser = await prisma.$transaction(
-    async (transactionClient: any) => {
-      // Update user data
-      const user = await transactionClient.user.update({
-        where: {
-          id: userId,
-        },
-        data: updatedData
-      });
+  const updatedUser = await  prisma.user.update({where:{id:userId}, data:payload, select:{name:true, email:true,dob:true,location:true,gender:true,avatar:true, id:true}})
+  
+  
+  // await prisma.$transaction(
+  //   async (transactionClient: any) => {
+  //     // Update user data
+  //     const user = await transactionClient.user.update({
+  //       where: {
+  //         id: userId,
+        
+  //       },
+  //       data: payload
+  //     });
 
-      if (!user) {
-        throw new AppError(httpStatus.BAD_REQUEST, 'User not updated!');
-      }
-      return user;
-    },
-  );
+  //     if (!user) {
+  //       throw new AppError(httpStatus.BAD_REQUEST, 'User not updated!');
+  //     }
+     
+  //   },
+  // );
  
 
   return updatedUser;
@@ -690,23 +693,28 @@ const resendOtpIntoDB = async (payload: any) => {
   };
 };
 
-// const updateProfileImageIntoDB = async (
-//   userId: string,
-//   profileImageUrl: string,
-// ) => {
-//   const updatedUser = await prisma.user.update({
-//     where: { id: userId },
-//     data: {
-//       image: profileImageUrl,
-//     },
-//   });
+const updateProfileImageIntoDB = async (
+  userId: string,
+  profileImageUrl: string,
+) => {
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      avatar: profileImageUrl,
+    },select:{
+      id:true,
+      name:true,
+      email:true,
+      avatar:true,
+    }
+  });
 
-//   if (!updatedUser) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Profile image not updated!');
-//   }
+  if (!updatedUser) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Profile image not updated!');
+  }
 
-//   return updatedUser;
-// };
+  return updatedUser;
+};
 
 // const getEarningsFromDB = async (userId: string) => {
 //   const user = await prisma.user.findUnique({
@@ -1113,6 +1121,7 @@ export const UserServices = {
   // uploadIdProofIntoDB,
   createPasswordIntoDb,
   toggoleDoNoDisturb,
+  updateProfileImageIntoDB
   // studentIdInfoIntoDB,
   // updateStudentIdStatusIntoDB,
   // getAllUsersByAdminFromDB,

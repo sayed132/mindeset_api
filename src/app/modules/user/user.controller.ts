@@ -181,26 +181,26 @@ const resendOtp = catchAsync(async (req, res) => {
   });
 });
 
-// const updateProfileImage = catchAsync(async (req, res) => {
-//   const user = req.user as any;
-//   const file = req.file;
+const updateProfileImage = catchAsync(async (req, res) => {
+  const user = req.user as any;
+  const file = req.file;
 
-//   if (!file) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'file not found');
-//   }
-//   let fileUrl = '';
-//   if (file) {
-//     fileUrl = await uploadFileToSpace(file, 'retire-professional');
-//   }
-//   const result = await UserServices.updateProfileImageIntoDB(user.id, fileUrl);
+  if (!file) {
+    throw new AppError(httpStatus.NOT_FOUND, 'file not found');
+  }
+  let fileUrl = '';
+  if (file) {
+    fileUrl = await uploadFileToSpace(file, 'retire-professional');
+  }
+  const result = await UserServices.updateProfileImageIntoDB(user.id, fileUrl);
 
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Profile image updated successfully',
-//     data: result,
-//   });
-// });
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile image updated successfully',
+    data: result,
+  });
+});
 
 // const getEarnings = catchAsync(async (req, res) => {
 //   const user = req.user as any;
@@ -365,7 +365,7 @@ export const UserControllers = {
   // socialRegister,
   updatePassword,
   resendOtp,
-  // updateProfileImage,
+  updateProfileImage,
   updateMyProfile,
   // getEarnings,
   // withdrawBalance,

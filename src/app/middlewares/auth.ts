@@ -48,7 +48,7 @@ const auth = (...roles: string[]) => {
         email:user.email,
         role:user.role
       };
-     
+     console.log(user)
       if (roles.length && !roles.includes(user.role)) {
         throw new AppError(httpStatus.FORBIDDEN, 'Forbidden!');
       }

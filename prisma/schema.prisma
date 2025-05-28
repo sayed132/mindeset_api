@@ -21,7 +21,7 @@ model User {
   selectedFocusAreaId String?    @db.ObjectId
   selectedFocusArea   FocusArea? @relation(name: "userFocus", fields: [selectedFocusAreaId], references: [id])
   doNotDisturb        Boolean    @default(false)
-  gennder             Gender     @default(MALE)
+  gender             Gender     @default(MALE)
   role                UserRole   @default(USER)
   journals            Journal[]
   streak              Streak?
@@ -29,6 +29,11 @@ model User {
   otpExpiry           DateTime?
   sentNotification        Notification[]  @relation(name: "sender")
   recievedNotification    Notification []   @relation(name: "reciever")
+
+  dob                 DateTime?
+  location            String?  @default("default")
+  deleted             Boolean  @default(false)
+  avatar              String?  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

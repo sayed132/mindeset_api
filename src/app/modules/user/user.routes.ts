@@ -29,6 +29,13 @@ router.post(
   UserControllers.forgotPassword,
 );
 
+router.put(
+  '/update/avatar',
+  multerUpload.single('avatar'),
+  auth(),
+  UserControllers.updateProfileImage,
+);
+
 router.get(
   '/',
   auth(UserRole.ADMIN),
@@ -100,12 +107,7 @@ router.put('/update-password', UserControllers.updatePassword);
 //   UserControllers.withdrawBalance,
 // );
 
-// router.put(
-//   '/update-profile-image',
-//   multerUpload.single('profileImage'),
-//   auth(),
-//   UserControllers.updateProfileImage,
-// );
+
 
 // router.put(
 //   '/id-proof',

@@ -77,7 +77,10 @@ const socialLoginSchema = z.object({
 
 const updateUserSchema = z.object({
   name:z.string().optional(),
-  email:z.string().email()
+  email:z.string().email().optional(),
+  dob:z.string().optional(),
+  location:z.string().optional(),
+  gender:z.nativeEnum(Gender).optional()
 })
 
 export const UserValidations = {
