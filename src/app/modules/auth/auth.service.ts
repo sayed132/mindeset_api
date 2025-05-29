@@ -66,6 +66,7 @@ if(!userData){
     email: userData.email,
     role: userData.role,
     accessToken: accessToken,
+    avatar:userData.avatar
   };
 };
 
