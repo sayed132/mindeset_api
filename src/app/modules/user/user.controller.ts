@@ -181,7 +181,7 @@ const resendOtp = catchAsync(async (req, res) => {
   });
 });
 
-const updateProfileImage = catchAsync(async (req, res) => {
+const updateProfileImage = catchAsync(async (req:any, res) => {
   const user = req.user as any;
   const file = req.file;
 

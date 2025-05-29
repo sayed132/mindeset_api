@@ -10,6 +10,7 @@
     "generate": "ts-node src/generate-module.ts",
     "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seed":"ts-node ./src/seed.ts",
     "generate-module": "node src/app/scripts/generate-module.js"
   },
   "keywords": [],
