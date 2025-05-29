@@ -22,6 +22,7 @@ router.put('/', auth(), validateRequest(UserValidations.updateUserSchema), UserC
 // router.get('/me', auth(), UserControllers.getMyProfile);
 router.get('/streak', auth(),UserControllers.getStreak)
 router.put('/do-not-disturb', auth(),UserControllers.doNotDisturb )
+router.delete('/', auth(), UserControllers.deleteAccount)
 
 router.post(
   '/forgot-password',

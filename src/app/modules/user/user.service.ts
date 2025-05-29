@@ -263,6 +263,16 @@ const updateMyProfileIntoDB = async (userId: string, payload:IUserUpdate ) => {
 
   return updatedUser;
 };
+const deleteAccount = async (userId:string)=>{
+  const user = await prisma.user.findUnique({where:{id:userId}})
+
+  if(!user){
+    throw new AppError(httpStatus.NOT_FOUND, "UIser not found")
+  }
+  await prisma.user.delete({where:{id:userId}})
+
+  return {message:"User deleted successfully"}
+}
 
 // const updateUserRoleStatusIntoDB = async (userId: string, payload: any) => {
 //   const user = await prisma.user.findUnique({
@@ -1121,9 +1131,10 @@ export const UserServices = {
   // uploadIdProofIntoDB,
   createPasswordIntoDb,
   toggoleDoNoDisturb,
-  updateProfileImageIntoDB
+  updateProfileImageIntoDB,
   // studentIdInfoIntoDB,
   // updateStudentIdStatusIntoDB,
   // getAllUsersByAdminFromDB,
   // updateStudentStatusIntoDB,
+  deleteAccount
 };

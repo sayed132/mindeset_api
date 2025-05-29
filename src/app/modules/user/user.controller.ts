@@ -350,6 +350,19 @@ const doNotDisturb =  catchAsync(async (req, res)=>{
     })
 })
 
+const deleteAccount = catchAsync (async (req, res)=>{
+  const user = req.user
+
+  await UserServices.deleteAccount(user.id)
+
+  sendResponse(res, {
+    statusCode:httpStatus.OK,
+    success:true,
+    message:"User delted successfully",
+    data:null
+  })
+})
+
 export const UserControllers = {
   registerUser,
   getAllUsers,
@@ -371,7 +384,8 @@ export const UserControllers = {
   // withdrawBalance,
   // uploadIdProof,
   updateMyPassword,
-  doNotDisturb
+  doNotDisturb,
+  deleteAccount
   // studentIdInfo,
   // updateStudentIdStatus,
   // getAllUsersByAdmin,
