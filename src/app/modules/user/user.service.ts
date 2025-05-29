@@ -177,6 +177,7 @@ const getAllUsersFromDB = async () => {
       id: true,
       name: true,
       email: true,
+      avatar:true
     },
   });
 
