@@ -68,15 +68,25 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
   if (!payload.recievers || payload.recievers.length == 0){
     throw new AppError(httpStatus.BAD_REQUEST, "Select at least one user")
   }
-  let users = await Promise.all(payload.recievers.map(async(reciever,idx) => {
-    const user = await prisma.user.findUnique({where:{id:reciever}})
 
-    if (user?.fcmToken && (!user.doNotDisturb)){
+  let users = await   Promise.all(payload.recievers.map(async (reciever,idx) => {
+    
+    const user =  await prisma.user.findUnique({where:{id:reciever}})
+    if (user?.fcmToken && user.fcmToken !== "" && !user.doNotDisturb) { 
+      
       return user
+    } else {
+      console.log(`User with ID ${reciever} not found or does not have a valid FCM token.`);
+      return null
     }
-  }))
+    }))
+  
 
-  let tokens = users.map( user => user?.fcmToken)
+
+
+  let tokenizedUsers = users.filter( user => user != null)
+
+  let tokens = tokenizedUsers.map((user:any) => user.fcmToken);
   
     const message = {
       notification: {
@@ -90,13 +100,19 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
      const response = await admin
       .messaging()
       .sendEachForMulticast(message as any);
-
+ 
     const successfulTokens = response.responses
       .map((res: any, idx: number) => (res.success ? idx : null))
-      .filter((_, idx: number) => idx !== null) as number[];
-
+      .filter((_, idx: number) => _ !== null) as number[];
+    
     const successfulUsers = successfulTokens.map((idx:number) => users[idx]);
 
+   
+
+    if (successfulUsers.length === 0) {
+     
+    }else{
+      
     const notificationData = successfulUsers.map((user) => ({
       recieverId: user?.id as string,
       senderId: userId,
@@ -105,14 +121,22 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
       author:payload.author
     }));
 
+
+
     await prisma.notification.createMany({
       data: notificationData,
     });
+    }
 
+   
     const failedTokens = response.responses
-      .map((res: any, idx: number) => (!res.success ? tokens[idx] : null))
-      .filter((token): token is string => token !== null);
-
+      .map((res: any, idx: number) => {
+        if (!res.success) {
+          return tokens[idx];
+        }
+        return null;  
+      })
+      // .filter((token) => token !== null);
     return {
       successCount: response.successCount,
       failureCount: response.failureCount,
