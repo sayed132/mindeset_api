@@ -65,7 +65,7 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
   if (!payload.title || !payload.body || !payload.author){
        throw new ApiError(400, "Title, body and author are required");
   }
-  if (payload.recievers.length == 0){
+  if (!payload.recievers || payload.recievers.length == 0){
     throw new AppError(httpStatus.NOT_FOUND, "Select at least one user")
   }
   let users = await Promise.all(payload.recievers.map(async(reciever,idx) => {

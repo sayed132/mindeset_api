@@ -6,9 +6,12 @@ import fs from 'fs'
 async function seed(){
     const text = fs.readFileSync(path.join(process.cwd(), 'src', 'data.json'), 'utf-8')
     const data = JSON.parse(text)
-    await prisma.book.createMany({
-        data: data.books
+    const book = await prisma.book.createMany({
+        data: data
     })
+
+    console.log(`Seeded ${book.count} books successfully!`)
+
 }
 
 seed()
