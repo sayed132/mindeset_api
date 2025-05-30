@@ -66,7 +66,7 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
        throw new ApiError(400, "Title, body and author are required");
   }
   if (!payload.recievers || payload.recievers.length == 0){
-    throw new AppError(httpStatus.NOT_FOUND, "Select at least one user")
+    throw new AppError(httpStatus.BAD_REQUEST, "Select at least one user")
   }
   let users = await Promise.all(payload.recievers.map(async(reciever,idx) => {
     const user = await prisma.user.findUnique({where:{id:reciever}})
