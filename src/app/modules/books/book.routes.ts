@@ -18,10 +18,10 @@ const router = express.Router();
 router.post('/:focusId',auth(UserRole.ADMIN), createBook);
 
 // Get all books
-router.get('/',auth(UserRole.USER), getAllBooks);
+router.get('/',auth(), getAllBooks);
 // Create a book for a specific focus area
 // Get books by category (focus area)
-router.get('/focuses/:focusId',auth(UserRole.USER,UserRole.ADMIN), getBooksByCategory);
+router.get('/focuses/:focusId',auth(), getBooksByCategory);
 
 router.put(
   '/uploads',
@@ -32,7 +32,7 @@ router.put(
 
 
 // Get a specific book
-router.get('/:id',auth(UserRole.USER), getABook);
+router.get('/:id',auth(), getABook);
 
 // Update a specific book
 router.patch('/:id',auth(UserRole.ADMIN), updateBook);
