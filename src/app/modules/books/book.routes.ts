@@ -21,7 +21,7 @@ router.post('/:focusId',auth(UserRole.ADMIN), createBook);
 router.get('/',auth(UserRole.USER), getAllBooks);
 // Create a book for a specific focus area
 // Get books by category (focus area)
-router.get('/focuses/:focusId',auth(UserRole.USER), getBooksByCategory);
+router.get('/focuses/:focusId',auth(UserRole.USER,UserRole.ADMIN), getBooksByCategory);
 
 router.put(
   '/uploads',
