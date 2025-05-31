@@ -54,7 +54,8 @@ const updateBooks = async (booksId:string, payload:IUpdateBook)=>{
         authorDescription:authorDescription || book.authorDescription,
         overview:overview || book.overview,
         ttitle:title || book.ttitle,
-        url:url || book.url
+        url:url || book.url,
+        images:images
     }})
 
     return updatedBooks
