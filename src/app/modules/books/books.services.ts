@@ -6,7 +6,7 @@ import { ICreateBook, IUpdateBook } from "./book.interfaces"
 
 const createBooks = async (focusId:string,payload:ICreateBook)=>{
 
-    const books = await prisma.book.create({data:{ttitle:payload.title,author:payload.author,authorDescription:payload.author,overview:payload.overview,url:payload.url,focusAreaId:focusId}})
+    const books = await prisma.book.create({data:{ttitle:payload.title,author:payload.author,authorDescription:payload.author,overview:payload.overview,url:payload.url,focusAreaId:focusId,images:payload.images}})
     return books
 
 }
