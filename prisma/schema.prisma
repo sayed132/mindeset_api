@@ -21,7 +21,7 @@ model User {
   selectedFocusAreaId String?    @db.ObjectId
   selectedFocusArea   FocusArea? @relation(name: "userFocus", fields: [selectedFocusAreaId], references: [id])
   doNotDisturb        Boolean    @default(false)
-  gender             Gender     @default(MALE)
+  gender             Gender     @default(NA)
   role                UserRole   @default(USER)
   journals            Journal[] 
   streak              Streak?
@@ -127,6 +127,7 @@ model Notification {
 enum Gender {
   MALE
   FEMALE
+  NA
 }
 
 enum UserRole {

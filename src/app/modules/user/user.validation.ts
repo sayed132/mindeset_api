@@ -26,7 +26,7 @@ const updateProfileSchema = z.object({
   email: z
     .string()
     .optional(),
-    gender:z.nativeEnum(Gender).optional()
+  gender:z.nativeEnum(Gender).optional()
 });
 
 const forgetPasswordSchema = z.object({

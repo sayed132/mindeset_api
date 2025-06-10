@@ -9,6 +9,7 @@ const router = Router()
 
 
 router.route("/").post ( validateRequest(journalValidation.createJournalSchema), auth(), journalController.createJournal).get(auth(), journalController.getAllJournals)
+
 router.get("/search", auth(), journalController.searchJournal)
 router.route("/:journalId").get(auth(), journalController.getSingleJournal).put(validateRequest(journalValidation.updateJournalSchema),auth(), journalController.updateJournal).delete(auth(), journalController.deleteJournal)
 
