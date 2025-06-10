@@ -172,13 +172,7 @@ const getAllUsersFromDB = async () => {
   const result = await prisma.user.findMany({
     where: {
       role: UserRole.USER,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      avatar:true
-    },
+    }
   });
 
   if (result.length === 0) {
