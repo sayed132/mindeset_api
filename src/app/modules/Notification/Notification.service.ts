@@ -9,6 +9,8 @@ import admin from "./firebaseAdmin";
 const sendSingleNotification = async (req: any) => {
   try {
     const { userId } = req.params;
+
+    console.log(userId, "userid here");
   
     const { title, body,author } = req.body;
 
@@ -24,9 +26,13 @@ const sendSingleNotification = async (req: any) => {
       throw new AppError(httpStatus.BAD_REQUEST, "Fcm token is not present")
     }
 
+    console.log(user.fcmToken, "fcm token here");
+
     if (user.doNotDisturb){
       return
     }
+
+    console.log(user , "user here");
 
     const message = {
       notification: {
@@ -36,6 +42,7 @@ const sendSingleNotification = async (req: any) => {
       token: user.fcmToken,
     };
 
+    console.log(message, "message here");
     await prisma.notification.create({
       data: {
         recieverId: userId,
@@ -47,6 +54,8 @@ const sendSingleNotification = async (req: any) => {
     });
 
     const response = await admin.messaging().send(message);
+
+    console.log(response);
     return response;
   } catch (error: any) {
     console.error("Error sending notification:", error);
